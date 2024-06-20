@@ -5,7 +5,9 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Rect
 import android.util.AttributeSet
+import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
@@ -119,4 +121,24 @@ class CropFrameView(context: Context, attrs: AttributeSet?) : View(context, attr
     fun getFrameX(): Float = frameX
     fun getFrameY(): Float = frameY
 
+    fun getDistancesToPlayerView(): Rect {
+        val playerViewRect = Rect(playerViewLeft, playerViewTop, playerViewRight, playerViewBottom)
+        val cropFrameRect = Rect(
+            frameX.toInt(),
+            frameY.toInt(),
+            (frameX + frameWidth).toInt(),
+            (frameY + frameHeight).toInt()
+        )
+        Log.d(
+            "DISTANCES",
+            "frameWidth: $frameWidth\n" +
+                    "frameHeight: $frameHeight"
+        )
+        return Rect(
+            cropFrameRect.left - playerViewRect.left, // Left
+            cropFrameRect.top - playerViewRect.top,   // Top
+            playerViewRect.right - cropFrameRect.right, // Right
+            playerViewRect.bottom - cropFrameRect.bottom // Bottom
+        )
+    }
 }

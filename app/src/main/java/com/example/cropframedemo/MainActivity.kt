@@ -31,12 +31,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btn5.setOnClickListener {
-            Log.d("CROP_FRAME", "X: ${binding.cropFrameView.getFrameX()}, Y: ${binding.cropFrameView.getFrameY()}")
+            val distances = binding.cropFrameView.getDistancesToPlayerView()
+            Log.d(
+                "DISTANCES",
+                "Left: ${distances.left}, Top: ${distances.top}, Right: ${distances.right}, Bottom: ${distances.bottom}"
+            )
+            Log.d(
+                "DISTANCES", "Player left: ${binding.playerView.left}\n" +
+                        "Player top: ${binding.playerView.top}\n" +
+                        "Player right: ${binding.playerView.right}\n" +
+                        "Player bottom: ${binding.playerView.bottom}\n" +
+                        "Player width: ${binding.playerView.width}\n" +
+                        "Player height: ${binding.playerView.height}"
+            )
         }
     }
 
     private fun setupInitialFrameBounds() {
-        binding.playerView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        binding.playerView.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 binding.playerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 binding.cropFrameView.setPlayerViewBounds(
